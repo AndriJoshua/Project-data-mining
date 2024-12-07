@@ -10,7 +10,7 @@ class AppKedaiKopi:
         self.root = root
         self.root.title("Aplikasi Penjualan Kedai Kopi Selera Anambas")
         self.root.geometry("900x600")
-        self.sales_data = []  # Untuk menyimpan data penjualan
+        self.sales_data = []  
 
         # Daftar Produk
         self.products = [
@@ -54,11 +54,11 @@ class AppKedaiKopi:
         # Navigation
         self.setup_navigation()
 
-        # Default View
+        #View
         self.show_menu_produk()
 
     def setup_navigation(self):
-        # Sidebar for Navigation
+        # Sidebar
         self.sidebar = tk.Frame(self.main_frame, bg="#6B4E3D", width=200)
         self.sidebar.pack(side="left", fill="y")
 
@@ -77,7 +77,6 @@ class AppKedaiKopi:
         btn_prediksi.pack(fill="x", pady=5)
 
     def clear_main_content(self):
-        # Clear the right content area
         for widget in self.main_frame.winfo_children():
             if widget != self.sidebar:
                 widget.destroy()
@@ -87,7 +86,7 @@ class AppKedaiKopi:
         content_frame = tk.Frame(self.main_frame, bg="white")
         content_frame.pack(side="right", fill="both", expand=True)
 
-        # Scrollable Frame
+        # Scroll
         canvas = tk.Canvas(content_frame, bg="white")
         scrollbar = tk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
         scrollable_frame = tk.Frame(canvas, bg="white")
@@ -205,7 +204,7 @@ class AppKedaiKopi:
         content_frame = tk.Frame(self.main_frame, bg="white")
         content_frame.pack(side="right", fill="both", expand=True)
 
-    # Canvas dan scrollbar untuk halaman prediksi
+    # Canvas dan scrollbar 
         canvas = tk.Canvas(content_frame, bg="white")
         scrollbar = tk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
         self.prediction_frame = tk.Frame(canvas, bg="white")
@@ -220,7 +219,7 @@ class AppKedaiKopi:
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-    # Label dan tombol untuk prediksi
+    # Label dan tombol di bagian prediksi
         tk.Label(self.prediction_frame, text="Prediksi Penjualan", font=("Arial", 18, "bold"), bg="white").pack(pady=20)
 
         upload_button = tk.Button(self.prediction_frame, text="Upload File", bg="#6B4E3D", fg="white", font=("Arial", 14),
@@ -233,7 +232,8 @@ class AppKedaiKopi:
         self.view_image_button = tk.Button(self.prediction_frame, text="Lihat Gambar", bg="#6B4E3D", fg="white",
                                        font=("Arial", 14), command=self.view_images)
         self.view_image_button.pack(pady=10)
-        self.view_image_button.pack_forget()  # Sembunyikan tombol hingga prediksi selesai
+       
+        self.view_image_button.pack_forget()   # <---- untuk Sembunyikan tombol hingga prediksi selesai
 
         self.images_frame = tk.Frame(self.prediction_frame, bg="white")
         self.images_frame.pack(fill="both", expand=True)
@@ -247,10 +247,10 @@ class AppKedaiKopi:
     def run_prediction(self, file_path):
         try:
             self.loading_label.config(text="Memproses prediksi, harap tunggu...")
-            self.root.update_idletasks()  # Refresh GUI untuk menampilkan label loading
+            self.root.update_idletasks()  #<---- untuk Refresh GUI untuk menampilkan label loading
 
-        # Jalankan fungsi ProphetPredict
-            ProphetPredict(file_path)  # Fungsi akan menyimpan gambar di folder tertentu
+        # menjalankan fungsi ProphetPredict yang tadi dibuat
+            ProphetPredict(file_path)  #<--- gambar akan tersimpan di folder Gambar_prediksi
 
         # Gambar yang dihasilkan
             self.image_paths = [
@@ -260,7 +260,7 @@ class AppKedaiKopi:
             ]
 
             self.loading_label.config(text="Prediksi selesai.")
-            self.view_image_button.pack()  # Tampilkan tombol "Lihat Gambar"
+            self.view_image_button.pack()  #<---- untuk menampilkan tombol lihnat gambar
 
         except Exception as e:
             self.loading_label.config(text="")
@@ -268,16 +268,16 @@ class AppKedaiKopi:
 
     def view_images(self):
         for widget in self.images_frame.winfo_children():
-            widget.destroy()  # Hapus gambar sebelumnya
+            widget.destroy()  #<----- untuk menghapus gambar sebelumnya
 
         for img_path in self.image_paths:
             try:
                 img = Image.open(img_path)
-                img = img.resize((600, 400), Image.Resampling.LANCZOS)  # Menggunakan LANCZOS sebagai pengganti ANTIALIAS
+                img = img.resize((600, 400), Image.Resampling.LANCZOS) 
                 photo = ImageTk.PhotoImage(img)
 
                 label = tk.Label(self.images_frame, image=photo, bg="white")
-                label.image = photo  # Simpan referensi untuk mencegah garbage collection
+                label.image = photo  
                 label.pack(pady=10)
             except Exception as e:
                 tk.Label(self.images_frame, text=f"Gagal memuat gambar: {e}", bg="white", fg="red").pack(pady=10)
